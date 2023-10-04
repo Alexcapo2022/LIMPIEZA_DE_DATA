@@ -1,6 +1,15 @@
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
+import re
+# Función para validar el formato del período ingresado por el usuario
+def validar_periodo(periodo):
+    patron = r'^\d{4}-(0|1|2)$'
+    if re.match(patron, periodo):
+        return True
+    else:
+        return False
+
 
 # Define la función que procesa el archivo Excel y crea el nuevo archivo Excel con las columnas requeridas.
 def procesar_excel():
@@ -12,8 +21,13 @@ def procesar_excel():
         if not ruta_excel_original:
             return
         
-        # Solicita al usuario ingresar el número del período (0, 1 o 2).
-        periodo = simpledialog.askinteger("Ingresar Período", "Ingrese el número del período (0, 1 o 2):", minvalue=0, maxvalue=2)
+        # Solicita al usuario ingresar el período (AAAA-P).
+        periodo = simpledialog.askstring("Ingresar Período", "Ingrese el año y el período (AAAA-P) Ej: 2023-1")
+
+        # Validar el formato del período ingresado por el usuario
+        if not periodo or not validar_periodo(periodo):
+            messagebox.showinfo("Información", "Formato de período inválido. Debe ser en el formato 'AAAA-P' (por ejemplo, '2023-1').")
+            return
 
         # Carga el archivo Excel original en un DataFrame.
         dataframe_original = pd.read_excel(ruta_excel_original, engine='openpyxl')

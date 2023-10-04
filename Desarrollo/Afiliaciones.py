@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox, simpledialog
 # Define la función que procesa el archivo Excel y crea el nuevo archivo Excel con las columnas requeridas.
 def procesar_excel():
     try:
+        # Abre un cuadro de diálogo para seleccionar el archivo Excel original.
         ruta_excel_original = filedialog.askopenfilename(filetypes=[("Archivos Excel", "*.xlsx")])
 
         # Comprueba si se seleccionó un archivo.
@@ -14,16 +15,28 @@ def procesar_excel():
         # Carga el archivo Excel original en un DataFrame.
         dataframe_original = pd.read_excel(ruta_excel_original, engine='openpyxl')
 
-        # Filtra y selecciona las columnas requeridas, incluyendo APELLIDOS y SEXO.
-        columnas_requeridas = ["COD ALUM", "ESPECIALIDAD","CORREO1","Periodo"]
-        dataframe_final = dataframe_original[columnas_requeridas]
+        # Modifica los valores en la columna "ESPECIALIDAD" según las especificaciones dadas.
+        dataframe_original["ESPECIALIDAD"] = dataframe_original["ESPECIALIDAD"].replace({
+            "ING.CIVIL": "INGENIERIA CIVIL",
+            "ING.INDUSTRIAL": "INGENIERIA INDUSTRIAL",
+            "NEG. INTERNACIONALES": "NEGOCIOS INTERNACIONALES",
+            "ING.SISTEMAS": "INGENIERIA DE SISTEMAS"
+        })
 
-        # Combina las columnas APE PAT y APE MAT en una sola columna APELLIDOS.
-        dataframe_final['APELLIDOS'] = dataframe_final['APE PAT'] + " " + dataframe_final['APE MAT']
+        # Selecciona las columnas requeridas y crea un nuevo DataFrame con esas columnas.
+        dataframe_final = dataframe_original[["COD ALUM", "ESPECIALIDAD", "CORREO1", "Periodo"]].copy()
 
-        # Crea un nuevo DataFrame con las columnas necesarias.
-        columnas_nuevo = ["COD ALUM", "PROGRAMA ACADEMICO", "CONTACTO", "Periodo", "Grado", "Situacion", "Alumno", "Año admisión", "Ciclo admisión", "ID afiliación"]
-        dataframe_nuevo = pd.DataFrame(columns=columnas_nuevo)
+        # Llena automáticamente las columnas "Grado" y "Situacion" con los valores especificados.
+        dataframe_final["Grado"] = "PRE"
+        dataframe_final["Situacion"] = "Alumno"
+        dataframe_final["Alumno"] = "TRUE"
+
+        # Llena las columnas "Año admisión" y "Ciclo admisión" basándose en el valor de la columna "Periodo".
+        dataframe_final["Año admisión"] = dataframe_final["Periodo"].apply(lambda x: x.split('-')[0])
+        dataframe_final["Ciclo admisión"] = dataframe_final["Periodo"].apply(lambda x: x.split('-')[1])
+
+        # Crea la columna "ID afiliación" con los datos de las columnas "COD ALUM" y "ESPECIALIDAD".
+        dataframe_final["ID afiliación"] = dataframe_final["COD ALUM"].astype(str) + "-" + dataframe_final["ESPECIALIDAD"]
 
         # Solicita al usuario ingresar el nombre del archivo antes de guardarlo.
         nombre_archivo = simpledialog.askstring("Nombre del archivo", "Ingrese el nombre del archivo sin extensión:")
@@ -36,7 +49,7 @@ def procesar_excel():
             ruta_excel_nuevo = f'{carpeta_destino}\\{nombre_archivo}.xlsx'
 
             # Guarda el DataFrame final en un nuevo archivo Excel.
-            dataframe_nuevo.to_excel(ruta_excel_nuevo, index=False, engine='openpyxl', header=True)
+            dataframe_final.to_excel(ruta_excel_nuevo, index=False, engine='openpyxl', header=True, columns=["COD ALUM", "ESPECIALIDAD", "CORREO1", "Periodo", "Grado", "Situacion", "Alumno", "Año admisión", "Ciclo admisión", "ID afiliación"])
 
             messagebox.showinfo("Éxito", f'Data importante extraída y guardada en "{ruta_excel_nuevo}"')
         else:
@@ -55,5 +68,9 @@ procesar_button.pack()
 
 # Ejecutar el ciclo principal de la interfaz gráfica.
 root.mainloop()
+
+
+
+
 
 
