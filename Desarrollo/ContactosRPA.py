@@ -1,18 +1,17 @@
-import pandas as pd
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
 import re
-# Función para validar el formato del período ingresado por el usuario
-def validar_periodo(periodo):
-    patron = r'^\d{4}-(0|1|2)$'
-    if re.match(patron, periodo):
-        return True
-    else:
-        return False
+import pandas as pd
 
-
-# Define la función que procesa el archivo Excel y crea el nuevo archivo Excel con las columnas requeridas.
 def procesar_excel():
+    # Función para validar el formato del período ingresado por el usuario
+    def validar_periodo(periodo):
+        patron = r'^\d{4}-(0|1|2)$'
+        if re.match(patron, periodo):
+            return True
+        else:
+            return False
+
     try:
         # Abre un cuadro de diálogo para seleccionar el archivo Excel original.
         ruta_excel_original = filedialog.askopenfilename(filetypes=[("Archivos Excel", "*.xlsx")])
@@ -95,14 +94,13 @@ def procesar_excel():
     except Exception as e:
         messagebox.showerror("Error", f'Error al procesar el archivo Excel: {str(e)}')
 
-# Crear la ventana principal de la interfaz gráfica.
-root = tk.Tk()
-root.title("Procesamiento de Excel y Creación de Nuevo Excel")
+# # Crear la ventana principal de la interfaz gráfica.
+# root = tk.Tk()
+# root.title("Procesamiento de Excel y Creación de Nuevo Excel")
 
-# Crear un botón que llame a la función para procesar y crear el nuevo archivo Excel.
-procesar_button = tk.Button(root, text="Seleccionar, Procesar y Crear Excel", command=procesar_excel)
-procesar_button.pack()
+# # Crear un botón que llame a la función para procesar y crear el nuevo archivo Excel.
+# procesar_button = tk.Button(root, text="Seleccionar, Procesar y Crear Excel", command=procesar_excel)
+# procesar_button.pack()
 
-# Ejecutar el ciclo principal de la interfaz gráfica.
-root.mainloop()
-
+# # Ejecutar el ciclo principal de la interfaz gráfica.
+# root.mainloop()
