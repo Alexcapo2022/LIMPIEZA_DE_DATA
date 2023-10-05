@@ -12,4 +12,5 @@ Genera automáticamente correos electrónicos en un formato específico.
 Permite al usuario ingresar información como el período y el nombre del archivo.
 Proporciona una interfaz gráfica fácil de usar para una experiencia de usuario intuitiva.
 ¡Simplifica tus procesos de importación de datos con este potente y fácil de usar procesador de datos Excel!
+
 ![image](https://github.com/Alexcapo2022/RPA_IMPORTACIONES/assets/98053517/8fed6959-b081-485c-889b-1f20d2257e14)
