@@ -1,4 +1,5 @@
-# LIMPIEZA DE DATA 
+# LIMPIEZA DE DATA
+## (PROYECTO EN PAUSA)
 Procesador de Datos Excel para Importaciones RPA
 
 Este script en Python utiliza la biblioteca pandas junto con la interfaz gráfica tkinter para procesar archivos Excel específicos y generar un nuevo archivo Excel con las columnas requeridas para las importaciones de un sistema RPA. El programa permite a los usuarios seleccionar un archivo Excel original, combinar y manipular datos de varias columnas, generar correos electrónicos automáticamente, y guardar el resultado en una carpeta específica. También incluye una interfaz gráfica amigable que solicita al usuario ingresar información crucial para el procesamiento, como el período, el nombre del archivo y la carpeta de destino.
